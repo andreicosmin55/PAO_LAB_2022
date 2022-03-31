@@ -13,4 +13,8 @@ Preturi - detalii despre preturile pieselor auto si manopera
 Programare - informatii despre programarile facute pentru un anumit service
 Reducere - interfata, mostenita de clasa Preturi in care se calculeaza discount-uri pentru diferite piese si manopere
 
+Pentru toate aceste clase am creat si repository-uri care mostenesc interfata GenericRepository, in care se pot adauga, cauta dupa id, face update-uri si sterge obiectele create din respectivele clase.
+Pentru clasele Angajat, Piesa si Service am create si servicii (care faciliteaza implementarea actiunilor din meniul interactiv pentru aceste clase).
+Am realizat si o clasa simpla de exceptii (InvalidDataException), care ajuta la tratarea exceptiilor pentru input-uri invalide.
+
 Am creat si un meniu interactiv in care se pot adauga service-uri, angajati, piese, joburi, se pot afisa diferite aspecte despre aceastea si filtra in functie de input.
