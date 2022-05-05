@@ -11,7 +11,7 @@ import java.util.List;
 public class AngajatService {
     private AngajatRepository angajatRepository = new AngajatRepository();
 
-    public void adaugaUnAngajat(String nume,String prenume, double vechime, String pozitie, boolean functie_conducere,Job job) {
+    public void adaugaUnAngajat(String nume, String prenume, double vechime, String pozitie, boolean functie_conducere, Job job) {
 
         Angajat angajat = new Angajat(nume, prenume, vechime, pozitie, functie_conducere, job);
         angajatRepository.add(angajat);

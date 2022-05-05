@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class MecanicRepository implements GenericRepository<Mecanic> {
 
-    private ArrayList<Mecanic> mecanici = new ArrayList<Mecanic>();
+    static private ArrayList<Mecanic> mecanici = new ArrayList<Mecanic>();
     @Override
     public void add(Mecanic entity) {
         mecanici.add(entity);

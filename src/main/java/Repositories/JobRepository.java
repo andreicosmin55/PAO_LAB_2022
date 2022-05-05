@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class JobRepository implements GenericRepository<Job>{
 
-    private Job[] jobs= new Job[10];
+    static private Job[] jobs= new Job[10];
     @Override
     public void add(Job entity) {
         for(int i=0;i<jobs.length;i++)

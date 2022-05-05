@@ -5,7 +5,7 @@ import Entitati.Service.Cutie_de_viteze;
 import java.util.ArrayList;
 
 public class Cutie_vitezeRepository implements GenericRepository<Cutie_de_viteze>{
-    private ArrayList<Cutie_de_viteze> cutii_de_viteze = new ArrayList<Cutie_de_viteze>();
+    static private ArrayList<Cutie_de_viteze> cutii_de_viteze = new ArrayList<Cutie_de_viteze>();
 
     @Override
     public void add(Cutie_de_viteze entity) {

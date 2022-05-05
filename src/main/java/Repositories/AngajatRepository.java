@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AngajatRepository implements GenericRepository<Angajat> {
-    private ArrayList<Angajat> angajati = new ArrayList<Angajat>();
+    static private ArrayList<Angajat> angajati = new ArrayList<Angajat>();
     @Override
     public void add(Angajat entity) {
         angajati.add(entity);

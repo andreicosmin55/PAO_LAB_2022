@@ -5,7 +5,7 @@ import Entitati.Service.Service;
 import java.util.ArrayList;
 
 public class ServiceRepository implements GenericRepository<Service>{
-    private ArrayList<Service> serviceuri = new ArrayList<Service>();
+    static private ArrayList<Service> serviceuri = new ArrayList<Service>();
 
     @Override
     public void add(Service entity) {

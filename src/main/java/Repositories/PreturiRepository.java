@@ -5,7 +5,7 @@ import Entitati.Preturi.Preturi;
 import java.util.ArrayList;
 
 public class PreturiRepository implements GenericRepository<Preturi>{
-    private ArrayList<Preturi> preturi = new ArrayList<Preturi>();
+    static private ArrayList<Preturi> preturi = new ArrayList<Preturi>();
     @Override
     public void add(Preturi entity) {
         preturi.add(entity);

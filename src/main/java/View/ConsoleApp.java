@@ -11,7 +11,11 @@ import Repositories.PiesaRepository;
 import Services.AngajatService;
 import Services.PiesaService;
 import Services.ServiceService;
+import Singleton.Citire;
+import Singleton.Scriere;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -28,15 +32,36 @@ public class ConsoleApp {
     private ServiceService serviceService = new ServiceService();
     private JobRepository jobRepository = new JobRepository();
     private PiesaRepository piesaRepository = new PiesaRepository();
+    private static Citire singleton = new Citire();
+    static Scriere audit;
 
-
-    public static void main(String args[]) {
+    static {
+        try {
+            audit = Scriere.getInstance();
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
+    }
+    public ConsoleApp() throws IOException {
+        Citire citire = Citire.getInstance();
+        citire.citesteService("C:\\Users\\andre\\IdeaProjects\\Etapa1LabPAOPAO\\src\\main\\resources\\service.csv");
+        citire.citesteAngajati("C:\\Users\\andre\\IdeaProjects\\Etapa1LabPAOPAO\\src\\main\\resources\\angajati.csv");
+        citire.citestePiese("C:\\Users\\andre\\IdeaProjects\\Etapa1LabPAOPAO\\src\\main\\resources\\piese.csv");
+        citire.citestePreturi("C:\\Users\\andre\\IdeaProjects\\Etapa1LabPAOPAO\\src\\main\\resources\\preturi.csv");
+    }
+    public static void main(String args[]) throws Exception {
         ConsoleApp app = new ConsoleApp();
+        audit.ScrieAudit("Deschidere aplicatie");
         while (true) {
             app.showMenu();
             int option = app.readOption();
             app.execute(option);
         }
+    }
+
+    private void read() throws IOException {
+        singleton.citesteAngajati("C:\\Users\\andre\\IdeaProjects\\Etapa1LabPAOPAO\\src\\main\\resources\\angajati.csv");
+        singleton.citesteService("C:\\Users\\andre\\IdeaProjects\\Etapa1LabPAOPAO\\src\\main\\resources\\service.csv");
     }
 
     private void showMenu() {
@@ -60,7 +85,7 @@ public class ConsoleApp {
     private int readOption() {
         try {
             int option = readInt();
-            if (option >= 1 && option <= 11) {
+            if (option >= 1 && option <= 13) {
                 return option;
             }
         } catch (InvalidDataException invalid) {}
@@ -68,7 +93,7 @@ public class ConsoleApp {
         return readOption();
     }
 
-    private void execute(int option) {
+    private void execute(int option) throws IOException {
         switch (option) {
             case 1:
                 adaugaJob();
@@ -107,7 +132,10 @@ public class ConsoleApp {
                 CalculeazaReducere();
                 break;
             case 13:
+                audit.ScrieAudit("Inchidere aplicatie");
+                audit.close();
                 System.exit(0);
+                break;
         }
     }
 
@@ -120,7 +148,7 @@ public class ConsoleApp {
         }
     }
 
-    private void PieseCuFurnizor() {
+    private void PieseCuFurnizor() throws IOException {
         System.out.println("Numele furnizorului este: ");
         String furnizor = "";
         furnizor = s.nextLine();
@@ -128,9 +156,10 @@ public class ConsoleApp {
         for (Piesa p : piesaService.AfiseazaPieseleDeLaFurnizorul(furnizor)) {
             System.out.println(p.getNume_piesa());
         }
+        audit.ScrieAudit("Afisarea pieselor impreuna cu furnizorii acestora");
     }
 
-    private void ServiceDinAnul() {
+    private void ServiceDinAnul() throws IOException {
         System.out.println("Anul cautat este: ");
         String an = "";
         an = s.nextLine();
@@ -138,16 +167,18 @@ public class ConsoleApp {
         for (Service s : serviceService.AfiseazaServiceurileInfiintateInAnul(an)) {
             System.out.println(s.getNume());
         }
+        audit.ScrieAudit("Afisarea unui service din anul "+ an);
     }
 
-    private void AngajatCuMaiMultDe3AniExp() {
+    private void AngajatCuMaiMultDe3AniExp() throws IOException {
         System.out.println("Angajatii sunt:\n---------------------");
         for (Angajat a : angajatService.afiseazaAngajatiCuVechimePeste3Ani()) {
             System.out.println(a.getNume() + " " + a.getPrenume() + " cu o vechime de " + a.getVechime());
         }
+        audit.ScrieAudit("Afisarea angajatilor cu peste 3 ani experienta");
     }
 
-    private void adaugaJob() {
+    private void adaugaJob() throws IOException {
         System.out.print("Salariu minim: ");
         String sal_min = s.nextLine();
 
@@ -165,9 +196,10 @@ public class ConsoleApp {
 
         Job job = new Job(nume_job,parseDouble(sal_max), parseDouble(sal_min), parseShort(nr_max_ang), parseBoolean(locuri_libere));
         jobRepository.add(job);
+        audit.ScrieAudit("Adaugarea unui nou job");
     }
 
-    private void AdaugaPiesa() {
+    private void AdaugaPiesa() throws IOException {
         System.out.print("Nume piesa: ");
         String nume = s.nextLine();
 
@@ -202,10 +234,10 @@ public class ConsoleApp {
         Preturi pret = new Preturi(parseBoolean(client_fidel), parseDouble(pret_manopera), parseDouble(pret_piesa));
 
         piesaService.adaugaPiesa(parseInt(nr_tot_pie), parseBoolean(in_stoc), furnizor, masini_final, nume, pret);
-
+        audit.ScrieAudit("Adaugarea unei noi piese");
     }
 
-    private void adaugaAngajat(){
+    private void adaugaAngajat() throws IOException {
         System.out.print("Nume: ");
         String nume = s.nextLine();
 
@@ -239,9 +271,10 @@ public class ConsoleApp {
         String nume_job = s.nextLine();
         Job job = new Job(nume_job, parseDouble(sal_max), parseDouble(sal_min), parseShort(nr_max_ang), parseBoolean(locuri_libere));
         angajatService.adaugaUnAngajat(nume, prenume, parseDouble(vechime), pozitie, parseBoolean(fct_conducere), job);
+        audit.ScrieAudit("Adaugarea unui nou angajat");
     }
 
-    private void AdaugaService() {
+    private void AdaugaService() throws IOException {
 
         System.out.print("Nume service: ");
         String nume_service = s.nextLine();
@@ -292,38 +325,43 @@ public class ConsoleApp {
         }
 
         serviceService.adaugaService(nume_service, an_infiintare, angajati_final);
+        audit.ScrieAudit("Adaugarea unui nou service");
     }
 
-    private void AfiseazaToatePiese() {
+    private void AfiseazaToatePiese() throws IOException {
         System.out.println("Piesele sunt:\n---------------------");
         for (Piesa p : piesaService.AfiseazaToatePiesele()) {
             System.out.println(p.getNume_piesa());
         }
+        audit.ScrieAudit("Afisarea tuturor pieselor");
     }
 
-    private void AfiseazaToateService_urile() {
+    private void AfiseazaToateService_urile() throws IOException {
         System.out.println("Service-urile sunt:\n---------------------");
         for (Service s : serviceService.AfiseazaToateServiceurile()) {
             System.out.println(s.getNume());
         }
+        audit.ScrieAudit("Afisarea tuturor service-urilor");
     }
 
-    private void AfiseazaTotiAngajatii() {
+    private void AfiseazaTotiAngajatii() throws IOException {
         for (Angajat a : angajatService.afiseazaAngajatii()) {
             System.out.println(a.getNume() + " " + a.getPrenume());
         }
+        audit.ScrieAudit("Afisarea tuturor angajatilor");
     }
 
-    private  void AfiseazaToateJoburile(){
+    private  void AfiseazaToateJoburile() throws IOException {
         for(int i=0;i<jobRepository.getSize();i++)
         {
             if(jobRepository.get(i) != null){
                 System.out.println(jobRepository.get(i).getNume_job() + " " + "salariul minim fiind" + jobRepository.get(i).getSalariu_minim());
             }
         }
+        audit.ScrieAudit("Afisarea tuturor job-urilor");
     }
 
-    private void CalculeazaReducere() {
+    private void CalculeazaReducere() throws IOException {
         System.out.println("Introduceti id-ul piese pentru care doriti sa aflati discount-ul!");
         int id = parseInt(s.nextLine());
         Piesa piesa = piesaRepository.get(id);
@@ -335,11 +373,12 @@ public class ConsoleApp {
         double pret_initial = pret.calculeaza_pret(piesa);
         if (pret.calc_reducere(piesa) != 0){
             double pret_final = pret_initial - pret_initial*pret.calc_reducere(piesa);
-            System.out.println("In loc de "+ pret_initial+ " platiti "+ pret_final + " ceea ce inseamna o reducere de " + pret.calc_reducere(piesa) + "%.");
+            System.out.println("In loc de " + pret_initial + " platiti "+ pret_final + " ceea ce inseamna o reducere de " + pret.calc_reducere(piesa) + "%.");
         }
         else {
             System.out.println("Nu s-a putut obtine o reducere pentru aceasta piesa");
         }
+        audit.ScrieAudit("Calculare de reducere");
     }
 
 

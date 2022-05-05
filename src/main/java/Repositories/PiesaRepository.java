@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class PiesaRepository implements GenericRepository<Piesa>{
 
-    private ArrayList<Piesa> piese = new ArrayList<Piesa>();
+    static private ArrayList<Piesa> piese = new ArrayList<Piesa>();
     @Override
     public void add(Piesa entity) {
         piese.add(entity);

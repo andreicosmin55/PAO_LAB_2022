@@ -5,8 +5,8 @@ import Entitati.Service.Programare;
 import java.util.HashSet;
 
 public class ProgramareRepository implements GenericRepository<Programare>{
-    private HashSet<Programare> programari = new HashSet<Programare>();
-    private Programare[] progr = programari.toArray(new Programare[programari.size()]);
+    static private HashSet<Programare> programari = new HashSet<Programare>();
+    static private Programare[] progr = programari.toArray(new Programare[programari.size()]);
     @Override
     public void add(Programare entity) {
         programari.add(entity);

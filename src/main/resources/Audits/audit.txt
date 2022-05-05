@@ -1,0 +1,3 @@
+Deschidere aplicatie, 2022-05-05 23:35:22.532
+Afisarea tuturor service-urilor, 2022-05-05 23:35:24.223
+Inchidere aplicatie, 2022-05-05 23:36:02.565
